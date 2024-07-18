@@ -13,12 +13,14 @@ export class OrdersController {
 
   @Post()
   create(@Body() createOrderDto: CreateOrderDto) {
-    return this.natsClient.send('createOrder', createOrderDto);
+    return this.natsClient.send('createOrder', createOrderDto)
+      .pipe(catchError(error => { throw new RpcException(error) }))
   }
 
   @Get()
   findAll(@Query() ordenPaginationDto: OrderPaginationDto) {
-    return this.natsClient.send('findAllOrders', ordenPaginationDto);
+    return this.natsClient.send('findAllOrders', ordenPaginationDto)
+      .pipe(catchError(error => { throw new RpcException(error) }));
   }
 
 
